@@ -1,0 +1,58 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#e8559a"><meta name="apple-mobile-web-app-capable" content="yes">
+<title>Coffeebreak Karaoke Mic</title><link rel="manifest" href="manifest.webmanifest"><link rel="apple-touch-icon" href="icon.png">
+<style>
+*{box-sizing:border-box}body{margin:0;font-family:system-ui,-apple-system,sans-serif;background:#ffe3f0;color:#6b1240;text-align:center;font-size:22px}
+main{max-width:480px;margin:0 auto;padding:14px 16px 8px;min-height:100vh;display:flex;flex-direction:column;gap:12px}
+header{display:flex;align-items:center;justify-content:center;gap:10px}header img{width:52px;height:52px;border-radius:12px}h1{font-size:24px;margin:0}
+#st{font-size:24px;font-weight:700;min-height:32px}#st.ok{color:#178a3a}
+button,input,select,textarea{font:inherit;border-radius:18px;border:0}input,select,textarea{padding:12px;border:2px solid #6b1240;width:100%;font-size:20px;background:#fff;color:#6b1240}
+.big{padding:20px;font-size:28px;font-weight:800;color:#fff;background:#e8559a;width:100%}
+#mic{width:230px;height:230px;border-radius:50%;margin:6px auto;font-size:40px;font-weight:800;background:#ffc2dc;color:#6b1240;box-shadow:0 8px 0 #c43c7e}
+#mic.on{background:#e8559a;color:#fff;animation:p 1.2s infinite}@keyframes p{50%{box-shadow:0 8px 0 #c43c7e,0 0 0 18px #e8559a33}}
+.row{display:flex;gap:10px;align-items:center}.sm{flex:1;padding:12px 6px;font-size:18px;background:#ffc2dc;color:#6b1240}.sm.on{background:#6b1240;color:#fff}
+.hide{display:none!important}label{font-size:19px;display:block;text-align:left}input[type=range]{padding:0;border:0;accent-color:#e8559a;height:34px;background:none}
+#qr{margin:0 auto;width:132px;height:132px;background:#fff;padding:6px;border-radius:10px}#qr img,#qr canvas{width:120px;height:120px}
+#share{background:#6b1240}.note{font-size:16px;opacity:.85;margin:0}footer{font-size:12px;opacity:.8;margin-top:auto;padding-top:8px}
+#lyr{background:#6b1240;color:#ffd6e8;border-radius:20px;padding:18px;height:46vh;overflow:hidden;font-size:30px;line-height:1.5;font-weight:700}
+#lyr p{margin:0 0 10px;opacity:.55;transition:all .2s}#lyr p.now{opacity:1;color:#fff;font-size:1.25em}
+#tap{position:fixed;inset:0;background:#e8559aee;color:#fff;font-size:40px;font-weight:800;border-radius:0;z-index:9}
+@media(min-width:900px){body.spk main{max-width:1400px;display:grid;grid-template-columns:1fr 380px;align-items:start}body.spk header,body.spk footer{grid-column:1/-1}body.spk #lyrWrap{grid-row:2/5}body.spk #lyr{height:78vh;font-size:46px}}
+</style></head><body><main>
+<header><img src="logo.png" alt="Coffeebreak"><h1>Coffeebreak Karaoke Mic</h1></header>
+<section id="setup" class="hide"><p>Your name</p><input id="nm" autocomplete="off" placeholder="name"><p></p><button class="big" id="start">Start</button></section>
+<div id="lyrWrap" class="hide"><div id="lyr"><p>Paste lyrics or load a .lrc file</p></div></div>
+<section id="app" class="hide" style="display:flex;flex-direction:column;gap:12px">
+ <div id="st">Starting…</div>
+ <div class="row"><button class="sm" id="rSpk">Speaker</button><button class="sm" id="rMic">Mic</button></div>
+ <div id="micUI" class="hide" style="display:flex;flex-direction:column;gap:10px">
+  <div class="row"><input id="room" placeholder="room name" autocomplete="off"><button class="sm" id="join" style="flex:0 0 100px">Join</button></div>
+  <button id="mic">MIC<br>OFF</button>
+  <label>Voice effect<select id="fx"><option>Normal</option><option>Echo</option><option>Hall</option><option>Deep</option><option>Chipmunk</option></select></label>
+  <label>Echo / reverb<input type="range" id="rev" min="0" max="1" step="0.05" value="0.2"></label>
+  <label>Volume<input type="range" id="mv" min="0" max="2" step="0.05" value="1"></label>
+  <button class="sm" id="ec">Echo cancel: off</button>
+  <p class="note">Tip: use headphones or keep the phone away from the speaker.</p>
+ </div>
+ <div id="spkUI" class="hide" style="display:flex;flex-direction:column;gap:10px">
+  <p class="note" id="cnt">No mics yet</p>
+  <label>Song file<input type="file" id="song" accept="audio/*"></label>
+  <div class="row"><input id="songUrl" placeholder="or song link"><button class="sm" id="songGo" style="flex:0 0 90px">Load</button></div>
+  <audio id="songEl" controls playsinline style="width:100%"></audio>
+  <label>Song volume<input type="range" id="sgv" min="0" max="1" step="0.05" value="0.7"></label>
+  <label>Voice volume<input type="range" id="vv" min="0" max="3" step="0.05" value="1.5"></label>
+  <textarea id="lyrTxt" rows="3" placeholder="Paste lyrics"></textarea>
+  <label>Lyrics file (.lrc)<input type="file" id="lrc" accept=".lrc,.txt,text/plain"></label>
+  <button class="sm" id="hp">Headphones on this device: no</button>
+ </div>
+ <button class="big" id="share">Share my link</button>
+ <div id="qr"></div>
+ <p class="note">On iPhone and iPad keep this app on screen.</p>
+</section>
+<button id="tap" class="hide">Tap to start sound</button>
+<footer>© Karen O'Brien (Coffeebreak). Karen O'Brien keeps all rights to this app, its design, name and logo. You may resell a physical phone you bought, but you may not copy this app or make your own version of it.</footer>
+</main>
+<script src="peerjs.min.js"></script><script src="qrcode.min.js"></script><script src="link.js"></script><script src="app.js"></script>
+<script>if('serviceWorker' in navigator)navigator.serviceWorker.register('sw.js').catch(function(){})</script>
+</body></html>
